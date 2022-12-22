@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+   
+          <meta charset="UTF-8"/>
+          <meta name="viewport" content="width=device-width ,initial-scale=1.0" />
+          
+          <title>forms</title>
+        
+        <style>
+
+            body{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+
+            h1{
+                font-family: cursive;
+            }
+            
+            .tasks-container {
+                border-width: 1px;
+                border-style: solid;
+                display: inline-block;
+                margin-right: 20px;
+                padding: 8px;
+                }
+            .w3-table-all {
+                border-collapse: collapse;
+                border-spacing: 0;
+                width: 100%;
+                display: table;
+                border: 1px solid #ccc
+                }
+            .w3-table-all tr {
+                border-bottom: 1px solid #ddd
+                }
+            .w3-table-all tr:nth-child(odd) {
+                background-color: #fff
+                }
+            .w3-table-all tr:nth-child(even) {
+                background-color: #f1f1f1
+                }
+            .w3-table-all td,
+            .w3-table-all th {
+                
+                padding: 8px 8px;
+                display: table-cell;
+                text-align: left;
+                vertical-align: top
+                }
+            .w3-table-all th:first-child,
+            .w3-table-all td:first-child {
+                padding-left: 16px
+                }
+            .w3-table-all th{
+                background-color: #d0d0d0;
+                }
+            
+            
+            .add-task-container {
+                position: relative;
+                margin-top: 20px;
+                
+                } 
+            .add-task-container div{
+                position: absolute;
+                top: 0;
+                right: 60px;
+                left: 45px;
+            } 
+            .add-task-container div input{
+                width: 100%;
+                } 
+            .add-task-container input{
+                position: absolute;
+                width:50px;
+                top: 0;
+                right: 0;
+            }
+
+
+
+        </style>
+        
+        
+        
+    </head>
+    
+    
+    <body>
+        
+        
+        <h1>Welcome to MyTasks Application</h1>
+        <p>This application is built to tasks</p>
+        
+        <div id='app'>
+            
+        <tasks :name="name"  :tasks_list=" tasks_list"></tasks>
+           
+        </div>
+        
+        
+        
+        
+    
+    <!--<script src="vue.js"></script>-->
+    <script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>  
+        
+    <script>
+        
+        Vue.component('tasks',{
+            template :`<div  class='tasks-container'>
+            <input id="hide_cmp_tasks" type="checkbox" v-model="hide_completed_tasks"/>
+            <label for="hide_cmp_tasks">Hide completed tasks</label>
+            
+            <table  class="w3-table-all">
+          <colgroup>
+              
+              <col style="width: 15%">
+              
+              <col style="width: 85%">
+            
+            
+            
+           </colgroup>
+            
+            
+            <tbody>
+                
+                <tr>
+                    <th colspan="2">
+                      <center> {{name}} - Tasks
+                        </center>
+                    </th>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <strong>Done</strong>
+                    
+                    </td>
+                    
+                    <td>
+                        <strong>Title</strong>
+                    
+                    </td>
+                </tr>
+                
+                <tr v-for="task in filtered_tasks" v-bind:key="task.title">
+                    <td><input type="checkbox" v-model="task.done"/></td>
+                    <td>
+                        {{task.title}}
+                    
+                    </td>
+                    
+                </tr>
+            
+            </tbody>
+        
+        </table>
+
+         <div class="add-task-container">
+            <span>Task: </span>
+
+            <div>
+            <input type="text" v-model="new_task_text"/>
+            </div>
+            <input type="button" value="Add" @click="add_new_task()"/>
+            </div>
+        
+        
+        
+           
+        
+           </div>`,
+            
+            props:
+            {
+                name:String,
+                tasks_list:Array,
+                
+                
+                
+            },
+            data() {
+            return {
+            hide_completed_tasks: false,
+            new_task_text:"",
+            
+            }
+            },
+            
+            computed: {
+            filtered_tasks: function() {
+            return this.hide_completed_tasks ? this.tasks_list.filter(task => !task.done) : this.tasks_list;
+            },
+                
+            
+            },
+                      
+            methods :{
+                add_new_task : function() {
+                this.tasks_list.push({ title: this.new_task_text, done:
+                false });
+                this.new_task_text = "";
+                }
+                }
+            
+          
+            
+        })
+        
+        
+        
+         var inst1 =  new Vue(
+       {
+            el:"#app",
+            
+            data:{
+                
+                 name :'sh',
+                    tasks_list: [
+                    { title: "Write an introduction about vue.js components.", done: true},
+                    { title: "Write an introduction about js components", done: false },
+                    { title: "Write an introduction about css components", done: false },
+                    { title: "Buy new book.", done: true }
+                    ],
+                
+                   
+               
+               
+            },
+           methods :{
+                
+           },
+           
+                
+           
+           
+            })
+        
+    </script>
+     </body>
+</html>
